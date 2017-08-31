@@ -1,20 +1,16 @@
 <?php 
-	require_once "vendor/autoload.php";
+    require_once "vendor/autoload.php";
 
-	use Cloudflare\Zone\Dns;
+    use Cloudflare\Zone\Dns;
 
-	define("API_KEY", "2c199018a24e1bc03fe8fa35b0e5333009089");
-	define("API_EMAIL", "dmitriy.buteiko@gmail.com");
+    define("API_KEY", "2c199018a24e1bc03fe8fa35b0e5333009089");
+    define("API_EMAIL", "dmitriy.buteiko@gmail.com");
 
-  
     function addDnsRecord($domain, $type, $name, $ip, $ttl = 120)
-	{
-		$apiKey = "2c199018a24e1bc03fe8fa35b0e5333009089";
-		$apiEmail = "dmitriy.buteiko@gmail.com";
-
+    {
     	// Create a connection to the Cloudflare API which you can
     	// then pass into other services, e.g. DNS, later on
-   	 	$client = new Cloudflare\Api(API_EMAIL, API_KEY);
+   	 $client = new Cloudflare\Api(API_EMAIL, API_KEY);
 
         $zone = $client->get("zones", array(
             "name" => $domain
@@ -43,7 +39,6 @@
 
         foreach($domainRecordsArray as $singleDomainRecord)
         {
-            //var_dump($singleDomainRecord);
             if($singleDomainRecord["name"] == $name)
             {
 
@@ -64,16 +59,16 @@
     {
     	$client = new Cloudflare\Api(API_EMAIL, API_KEY);
 
-		$response = $client->post("/zones", array(
-			"name" => $domainName,
+	$response = $client->post("/zones", array(
+	    "name" => $domainName,
             "jump_start" => true
-		));
+	));
 
         $responseArray = get_object_vars($response);
         $resultArray = get_object_vars($responseArray["result"]);
         $zoneIdentifier = $resultArray["id"];
 
-		return $zoneIdentifier;
+	return $zoneIdentifier;
     }
 
     addDnsRecord("spaces.ru", "A", "spaces.ru", "26.26.26.26", 120);
